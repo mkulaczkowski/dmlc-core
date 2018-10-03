@@ -55,10 +55,8 @@ def submit(args):
         if nworker > 0:
             logging.info('Start %d workers by mpirun' % nworker)
             pass_envs['DMLC_ROLE'] = 'worker'
-            if sys.platform == 'win32':
-                prog = 'mpiexec -n %d %s %s' % (nworker, get_mpi_env(pass_envs), cmd)
-            else:
-                prog = 'mpirun -n %d %s %s' % (nworker, get_mpi_env(pass_envs), cmd)
+            
+            prog = 'mpirun --allow-run-as-root -n %d %s %s' % (nworker, get_mpi_env(pass_envs), cmd)
             thread = Thread(target=run, args=(prog,))
             thread.setDaemon(True)
             thread.start()
@@ -68,10 +66,7 @@ def submit(args):
         if nserver > 0:
             logging.info('Start %d servers by mpirun' % nserver)
             pass_envs['DMLC_ROLE'] = 'server'
-            if sys.platform == 'win32':
-                prog = 'mpiexec -n %d %s %s' % (nserver, get_mpi_env(pass_envs), cmd)
-            else:
-                prog = 'mpirun -n %d %s %s' % (nserver, get_mpi_env(pass_envs), cmd)
+            prog = 'mpirun --allow-run-as-root -n %d %s %s' % (nserver, get_mpi_env(pass_envs), cmd)
             thread = Thread(target=run, args=(prog,))
             thread.setDaemon(True)
             thread.start()
