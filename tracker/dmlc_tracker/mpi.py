@@ -56,7 +56,7 @@ def submit(args):
             logging.info('Start %d workers by mpirun' % nworker)
             pass_envs['DMLC_ROLE'] = 'worker'
             
-            prog = 'mpirun --allow-run-as-root --display-map --display-devel-allocation --hostfile /kube-openmpi/generated/hostfile -n %d %s %s' % (nworker, get_mpi_env(pass_envs), cmd)
+            prog = 'mpirun --verbose --allow-run-as-root --display-map --display-devel-allocation --hostfile /kube-openmpi/generated/hostfile -n %d %s %s' % (nworker, get_mpi_env(pass_envs), cmd)
             thread = Thread(target=run, args=(prog,))
             thread.setDaemon(True)
             thread.start()
@@ -66,7 +66,7 @@ def submit(args):
         if nserver > 0:
             logging.info('Start %d servers by mpirun' % nserver)
             pass_envs['DMLC_ROLE'] = 'server'
-            prog = 'mpirun --allow-run-as-root --display-map --display-devel-allocation --hostfile /kube-openmpi/generated/hostfile -n %d %s %s' % (nserver, get_mpi_env(pass_envs), cmd)
+            prog = 'mpirun --verbose --allow-run-as-root --display-map --display-devel-allocation --hostfile /kube-openmpi/generated/hostfile -n %d %s %s' % (nserver, get_mpi_env(pass_envs), cmd)
             thread = Thread(target=run, args=(prog,))
             thread.setDaemon(True)
             thread.start()
